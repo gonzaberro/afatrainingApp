@@ -3,16 +3,13 @@ import * as WebBrowser from "expo-web-browser";
 export const BACKGROUND = require("./assets/logo.png");
 export const GOOGLE = require("./assets/google.png");
 import { auth, getExercises } from "./firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, User } from "firebase/auth";
 import LoginPage from "./components/LoginPage";
-import { WebView } from "react-native-webview";
-
-WebBrowser.maybeCompleteAuthSession();
+import { SafeAreaView, StyleSheet, Text, Image } from "react-native";
 
 export default function App() {
-	const ref = React.useRef<WebView>(null);
 	const [logged, setLogged] = React.useState(false);
-	const [userLogged, setUser] = React.useState({});
+	const [userLogged, setUser] = React.useState<User>();
 
 	React.useEffect(() => {
 		onAuthStateChanged(auth, user => {
@@ -21,8 +18,6 @@ export default function App() {
 
 				setUser(user);
 			}
-			//console.log("user", user);
-			//getExercises();
 		});
 	}, []);
 
@@ -31,16 +26,24 @@ export default function App() {
 			{!logged || !userLogged ? (
 				<LoginPage />
 			) : (
-				<WebView
-					ref={ref}
-					injectedJavaScriptBeforeContentLoaded={
-						"(function(){localStorage.setItem(`firebase:authUser:AIzaSyCgWMkjXQHp5R5UGCFajnB8adijATGsIzg:[DEFAULT]`, " +
-						JSON.stringify(userLogged) +
-						")})()"
-					}
-					source={{ uri: "https://afatraining.vercel.app/" }}
-				/>
+				<SafeAreaView style={styles.container}>
+					<Text>Logged: {userLogged.displayName}</Text>
+					<Image
+						source={{ uri: userLogged.photoURL || "" }}
+						style={{ width: 200, height: 200 }}
+					/>
+				</SafeAreaView>
 			)}
 		</>
 	);
 }
+
+const styles = StyleSheet.create({
+	container: {
+		display: "flex",
+		height: "100%",
+		justifyContent: "center",
+		alignItems: "center",
+		textAlign: "center",
+	},
+});
