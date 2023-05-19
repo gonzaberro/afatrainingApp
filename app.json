@@ -16,7 +16,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "package": "com.afatrainingapp"
+      "package": "com.afatrainingapp",
+      "bundleIdentifier": "com.afatrainingapp"
     },
     "android": {
       "adaptiveIcon": {
