@@ -1,24 +1,25 @@
 import * as React from "react";
-import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import {
 	SafeAreaView,
-	StyleSheet,
 	Text,
 	ImageBackground,
 	View,
 	TouchableOpacity,
 	Image,
+	Linking,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-export const BACKGROUND = require("../assets/logo.png");
-export const GOOGLE = require("../assets/google.png");
+
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { auth, authFirebase } from "../firebase/firestore";
-import { signOut } from "firebase/auth";
+import { styles } from "./styles";
+import { authFirebase } from "../../firebase/firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { getLoadingAuth, setLoadingAuth } from "../../reducers/generalReducer";
 
-WebBrowser.maybeCompleteAuthSession();
+export const BACKGROUND = require("../../assets/logo.png");
+export const GOOGLE = require("../../assets/google.png");
 
 export default function LoginPage() {
 	const [request, response, promptAsync] = Google.useAuthRequest({
@@ -27,11 +28,14 @@ export default function LoginPage() {
 		iosClientId:
 			"596696153702-p53khs5n8kq9srpbm7nd7v16hqi31kjn.apps.googleusercontent.com",
 	});
+	const dispatch = useDispatch();
+	const loadingAuth = useSelector(getLoadingAuth);
 
 	React.useEffect(() => {
 		if (response?.type === "success") {
 			const { authentication } = response;
 			if (authentication?.accessToken) {
+				dispatch(setLoadingAuth(true));
 				authFirebase(
 					authentication?.accessToken,
 					authentication?.idToken || ""
@@ -45,8 +49,7 @@ export default function LoginPage() {
 	};
 
 	const handleOpenInstagram = () => {
-		signOut(auth);
-		//Linking.openURL("instagram://user?username=afa.training");
+		Linking.openURL("instagram://user?username=afa.training");
 	};
 
 	return (
@@ -66,7 +69,9 @@ export default function LoginPage() {
 						onPress={signInWithGoogle}
 					>
 						<Image source={GOOGLE} style={styles.googleImage} />
-						<Text style={styles.text}>Iniciar Sesión con Google</Text>
+						<Text style={styles.text}>
+							{loadingAuth ? "Buscando Sesión..." : "Iniciar Sesión con Google"}
+						</Text>
 					</TouchableOpacity>
 
 					<View style={styles.instagramContainer}>
@@ -90,69 +95,3 @@ export default function LoginPage() {
 		</ImageBackground>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		display: "flex",
-		height: "100%",
-		flexDirection: "column",
-		justifyContent: "space-evenly",
-		alignItems: "center",
-		textAlign: "center",
-	},
-	background: {
-		width: "100%",
-		height: "100%",
-		backgroundColor: "rgba(0,0,0,.46)",
-	},
-	backgroundImage: {
-		width: "100%",
-		height: "100%",
-	},
-	text: {
-		color: "black",
-		fontSize: 18,
-	},
-	buttonContainer: {
-		borderRadius: 30,
-		backgroundColor: "white",
-		display: "flex",
-		width: "80%",
-		height: 50,
-		justifyContent: "center",
-		alignItems: "center",
-		flexDirection: "row",
-		gap: 10,
-	},
-	googleImage: {
-		width: 25,
-		height: 25,
-	},
-	mainText: {
-		fontWeight: "900",
-		fontSize: 60,
-		color: "white",
-	},
-	secondText: {
-		fontWeight: "100",
-		fontSize: 40,
-		color: "white",
-	},
-	headerContainer: {
-		width: "100%",
-		display: "flex",
-		flexDirection: "column",
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	instagramContainer: {
-		padding: 8,
-		borderRadius: 100,
-		backgroundColor: "transparent",
-		backgroundImage:
-			"linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5)",
-	},
-	instagram: {
-		color: "white",
-	},
-});
