@@ -7,8 +7,10 @@ export default function Logged() {
 	return (
 		<View style={styles.container}>
 			<View style={styles.containerView}>
-				<Planifications />
 				<NavBar />
+				<View style={styles.body}>
+					<Planifications />
+				</View>
 			</View>
 		</View>
 	);
@@ -17,7 +19,6 @@ export default function Logged() {
 const styles = StyleSheet.create({
 	container: {
 		display: "flex",
-
 		height: "100%",
 		justifyContent: "center",
 		alignItems: "center",
@@ -29,5 +30,8 @@ const styles = StyleSheet.create({
 		width: "100%",
 		backgroundColor: "#000000",
 		position: "relative",
+	},
+	body: {
+		marginTop: 80,
 	},
 });

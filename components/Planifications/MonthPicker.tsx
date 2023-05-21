@@ -63,6 +63,8 @@ const styles = StyleSheet.create({
 		justifyContent: "space-around",
 		alignItems: "center",
 		paddingHorizontal: 30,
+		position: "absolute",
+		bottom: 0,
 	},
 	pickerButton: {
 		backgroundColor: "#4285f4",

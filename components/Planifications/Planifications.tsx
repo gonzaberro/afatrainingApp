@@ -37,7 +37,6 @@ export default function Planifications() {
 
 	return (
 		<>
-			<MonthPicker />
 			{loading ? (
 				<View style={styles.loadingContainer}>
 					<ActivityIndicator size={"large"} color="#4285f4" />
@@ -45,6 +44,7 @@ export default function Planifications() {
 			) : (
 				<PlanificationList />
 			)}
+			<MonthPicker />
 		</>
 	);
 }

@@ -14,7 +14,12 @@ export default function PlanificationList() {
 					showsVerticalScrollIndicator={false}
 				>
 					{planifications.map(planification => {
-						return <PlanificationItem planification={planification} />;
+						return (
+							<PlanificationItem
+								planification={planification}
+								key={planification.uid}
+							/>
+						);
 					})}
 				</ScrollView>
 			) : (
