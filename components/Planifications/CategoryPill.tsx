@@ -27,13 +27,13 @@ export default function CategoryPill({ text }: Props) {
 const styles = StyleSheet.create({
 	redPill: {
 		borderRadius: 20,
-		paddingVertical: 8,
-		paddingHorizontal: 15,
 		alignSelf: "flex-start",
 		marginTop: 10,
 	},
 	text: {
 		color: "white",
 		fontWeight: "700",
+		paddingVertical: 8,
+		paddingHorizontal: 15,
 	},
 });

@@ -4,4 +4,5 @@ export const gradientColors = {
 	ESTABILIDAD: ["#a8e063", "#56ab2f"],
 	MOVILIDAD: ["#614385", "#516395"],
 	RESISTENCIA: ["#b89e08", "#eec745"],
+	HIPERTROFIA: ["#ee45d7", "#a0178e"],
 };

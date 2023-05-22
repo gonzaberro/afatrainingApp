@@ -36,7 +36,7 @@ export default function Planifications() {
 	}, [monthSelected]);
 
 	return (
-		<>
+		<View style={styles.container}>
 			{loading ? (
 				<View style={styles.loadingContainer}>
 					<ActivityIndicator size={"large"} color="#4285f4" />
@@ -45,11 +45,12 @@ export default function Planifications() {
 				<PlanificationList />
 			)}
 			<MonthPicker />
-		</>
+		</View>
 	);
 }
 
 const styles = StyleSheet.create({
+	container: { position: "relative", height: "100%" },
 	loadingContainer: {
 		display: "flex",
 		justifyContent: "center",
